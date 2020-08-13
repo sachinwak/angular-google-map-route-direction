@@ -1,92 +1,5 @@
 <div class="container">
   <div class="row">
-    <div class="col-lg-4">
-      <h1>4 Directions</h1>
-
-      <form>
-          <div class="row" >
-            <div class="col-6">
-              <div class="form-group">
-                <label for="location1">Locations 1</label>
-                <input #location1Map  type="text" class="form-control" id="location1" aria-describedby="location1" placeholder="Type Location here">
-              </div>
-            </div>
-            <div class="col-4">
-              <div class="form-group">
-                <label for="location1Order">Order</label>
-                <select class="form-control" id="location1Order">
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                </select>
-              </div>
-            </div>  
-          </div>
-
-          <div class="row" >
-            <div class="col-6">
-              <div class="form-group">
-                <label for="location2">Locations 2</label>
-                <input #location1Map  type="text" class="form-control" id="location2" aria-describedby="location2" placeholder="Type Location here">
-              </div>
-            </div>
-            <div class="col-4">
-              <div class="form-group">
-                <label for="location2Order">Order</label>
-                <select class="form-control" id="location2Order">
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                </select>
-              </div>
-            </div>  
-          </div>
-
-          <div class="row" >
-            <div class="col-6">
-              <div class="form-group">
-                <label for="exampleInputEmail1">Locations 3</label>
-                <input #location1Map  type="text" class="form-control" id="location1" aria-describedby="location1" placeholder="Type Location here">
-              </div>
-            </div>
-            <div class="col-4">
-              <div class="form-group">
-                <label for="location1Order">Order</label>
-                <select class="form-control" id="location1Order">
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                </select>
-              </div>
-            </div>  
-          </div>
-
-          <div class="row" >
-            <div class="col-6">
-              <div class="form-group">
-                <label for="exampleInputEmail1">Locations 4</label>
-                <input #location1Map  type="text" class="form-control" id="location1" aria-describedby="location1" placeholder="Type Location here">
-              </div>
-            </div>
-            <div class="col-4">
-              <div class="form-group">
-                <label for="location1Order">Order</label>
-                <select class="form-control" id="location1Order">
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                </select>
-              </div>
-            </div>  
-          </div>
-          <button type="submit" class="btn btn-primary">Find Direction</button>
-      </form>
-    </div>
-
     <div class="col-lg-8">
       <google-map
         height="500px"
@@ -105,11 +18,13 @@
           [options]="marker.options"
           [clickable]="true"
           (mapRightclick)="openInfo(somemarker, marker.index)"
+          (mapDragend)="onDragMarker($event,marker)"
         >
         </map-marker>
 
         <map-info-window>
-          <select class="form-control" id="location1Order" (click)="changeNumber()">
+          {{openMarker.title}}
+          <select class="form-control" #markerPoint (change)="changeOrderOfMarkers(markerPoint.value)">
             <option>1</option>
             <option>2</option>
             <option>3</option>
@@ -118,6 +33,10 @@
         </map-info-window>
       </google-map>
     </div> 
-    
+
+    <div class="col-lg-4">
+      <h1>Directions Guide:</h1>
+      <div id="rightPanel" #rightPanel></div> 
+    </div>
   </div>
 </div>

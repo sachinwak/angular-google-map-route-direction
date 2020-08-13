@@ -10,6 +10,9 @@ import { MapInfoWindow, MapMarker, GoogleMap } from '@angular/google-maps'
 export class AppComponent implements OnInit , AfterViewInit{
   @ViewChild(GoogleMap, { static: false }) mapObj: GoogleMap
   @ViewChild(MapInfoWindow, { static: false }) infoWindow: MapInfoWindow
+  @ViewChild("markerPoint", { static: false }) markerPoint: ElementRef;
+  
+  @ViewChild("rightPanel", { static: false }) rightPanel: ElementRef;
 
   zoom = 14
   center: google.maps.LatLngLiteral
@@ -28,7 +31,7 @@ export class AppComponent implements OnInit , AfterViewInit{
   directionsService;
   directionsRenderer;
 
-  openMarker;
+  openMarker = {title:"no marker", index: null};
 
   ngOnInit() {
     navigator.geolocation.getCurrentPosition(position => {
@@ -39,37 +42,44 @@ export class AppComponent implements OnInit , AfterViewInit{
         lng: 72.8898, */
       }
     });
-
-    this.directionsService = new google.maps.DirectionsService();
-    this.directionsRenderer = new google.maps.DirectionsRenderer({
-        suppressMarkers:true ,
-        draggable: true
-    });
   }
   
   ngAfterViewInit() {
-    //console.log("map :", this.mapObj);
+    this.directionsService = new google.maps.DirectionsService();
+    this.directionsRenderer = new google.maps.DirectionsRenderer({
+        suppressMarkers:true ,
+        draggable: true,
+        panel: this.rightPanel.nativeElement
+    });
   }  
 
-  
+  onDragMarker(event, marker){
+    this.markers[marker.index].position = {
+      lat: event.latLng.lat(),
+      lng: event.latLng.lng(),
+    };
+    
+    this.rearrageMarker();
+  }
+
   onMapClick(event: google.maps.MouseEvent) {
+    console.log(event);
     if(this.markers.length <= 3){
       var newMarker =  {
         position: {
           lat: event.latLng.lat(),
           lng: event.latLng.lng(),
         },
-        title: "Marker " + (this.markers.length + 1),
+        title: "Location " + (this.markers.length + 1),
         clickable:true,
-        index:this.markers.length
+        index:this.markers.length,
+        options:{
+          draggable: true,
+        }
       };
       this.markers.push(newMarker);
 
-      if(this.markers.length > 1){
-        // draw route
-        this.createDirectionPoints();
-        this.drawDirection();
-      }
+      this.rearrageMarker();
     }
     //console.log(event);
   }
@@ -84,7 +94,6 @@ export class AppComponent implements OnInit , AfterViewInit{
       }else{
         let location = {location: {lat: this.markers[i].position.lat, lng: this.markers[i].position.lng}};
         this.directionPoint.waypts.push(location);
-        MapMarker
       }
     }
   }
@@ -123,11 +132,49 @@ export class AppComponent implements OnInit , AfterViewInit{
   }
   
   openInfo(marker: MapMarker, index) {
+    this.markerPoint.nativeElement.value = index + 1;
     this.openMarker = this.markers[index];
     this.infoWindow.open(marker);
   }
 
-  changeNumber(){
-    console.log(this.openMarker);
+  changeOrderOfMarkers(markerSelectValue){
+    if(markerSelectValue > this.markers.length){
+      alert("You can not set order higher than total number of markers");
+      this.markerPoint.nativeElement.value = this.openMarker.index + 1;
+    }else{
+      let oldMarkerIndex = this.openMarker.index;
+      console.log("previous", oldMarkerIndex);
+
+      // rearrange
+      this.markers.map((marker, index)=>{
+        if((markerSelectValue - 1) == marker.index){ // other marker
+          marker.index = oldMarkerIndex;
+        }
+        if(this.openMarker.index == index){
+          this.openMarker.index =  markerSelectValue - 1;
+        }
+        return marker;
+      });
+      console.log("previous1", oldMarkerIndex);
+      
+      this.rearrageMarker();
+    }
+    
   }
+
+  rearrageMarker(){
+    this.markers.sort((a, b)=>{
+      return a.index - b.index
+    });
+
+    if(this.markers.length > 1){
+      // draw route
+      this.createDirectionPoints();
+      this.drawDirection();
+    }
+
+    console.log(this.markers);
+  }
+
+
 }

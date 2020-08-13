@@ -1,4 +1,6 @@
-# GoogleMapInterviewTest
+## Angular Google Map Route Direction
+
+Live Application Link: [here](https://sachinwak.github.io/angular-google-map-route-direction)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.0.5.
 
