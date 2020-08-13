@@ -1,26 +1,123 @@
-<google-map
-  height="500px"
-  width="100%"
-  [zoom]="zoom"
-  [center]="center"
-  [options]="options"
-  (mapClick)="onMapClick($event)"
->
-  <map-marker
-    #somemarker="mapMarker" 
-    *ngFor="let marker of markers"
-    [position]="marker.position"
-    [label]="marker.label"
-    [title]="marker.title"
-    [options]="marker.options"
-    [clickable]="true"
-    (mapRightclick)="openInfo(somemarker, marker.index)"
-  >
-  </map-marker>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-4">
+      <h1>4 Directions</h1>
 
-  <map-info-window>
-    <div (click)="changeNumber()">
-      <p>This is test</p> 
+      <form>
+          <div class="row" >
+            <div class="col-6">
+              <div class="form-group">
+                <label for="location1">Locations 1</label>
+                <input #location1Map  type="text" class="form-control" id="location1" aria-describedby="location1" placeholder="Type Location here">
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-group">
+                <label for="location1Order">Order</label>
+                <select class="form-control" id="location1Order">
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                </select>
+              </div>
+            </div>  
+          </div>
+
+          <div class="row" >
+            <div class="col-6">
+              <div class="form-group">
+                <label for="location2">Locations 2</label>
+                <input #location1Map  type="text" class="form-control" id="location2" aria-describedby="location2" placeholder="Type Location here">
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-group">
+                <label for="location2Order">Order</label>
+                <select class="form-control" id="location2Order">
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                </select>
+              </div>
+            </div>  
+          </div>
+
+          <div class="row" >
+            <div class="col-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Locations 3</label>
+                <input #location1Map  type="text" class="form-control" id="location1" aria-describedby="location1" placeholder="Type Location here">
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-group">
+                <label for="location1Order">Order</label>
+                <select class="form-control" id="location1Order">
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                </select>
+              </div>
+            </div>  
+          </div>
+
+          <div class="row" >
+            <div class="col-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Locations 4</label>
+                <input #location1Map  type="text" class="form-control" id="location1" aria-describedby="location1" placeholder="Type Location here">
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-group">
+                <label for="location1Order">Order</label>
+                <select class="form-control" id="location1Order">
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                </select>
+              </div>
+            </div>  
+          </div>
+          <button type="submit" class="btn btn-primary">Find Direction</button>
+      </form>
     </div>
-  </map-info-window>
-</google-map>
+
+    <div class="col-lg-8">
+      <google-map
+        height="500px"
+        width="100%"
+        [zoom]="zoom"
+        [center]="center"
+        [options]="options"
+        (mapClick)="onMapClick($event)"
+      >
+        <map-marker
+          #somemarker="mapMarker" 
+          *ngFor="let marker of markers"
+          [position]="marker.position"
+          [label]="marker.label"
+          [title]="marker.title"
+          [options]="marker.options"
+          [clickable]="true"
+          (mapRightclick)="openInfo(somemarker, marker.index)"
+        >
+        </map-marker>
+
+        <map-info-window>
+          <select class="form-control" id="location1Order" (click)="changeNumber()">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+          </select>
+        </map-info-window>
+      </google-map>
+    </div> 
+    
+  </div>
+</div>
